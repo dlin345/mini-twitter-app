@@ -13,6 +13,7 @@ public class SingleUser extends User {
 	public SingleUser (String id) {
 		super(id);
 		followers = new ArrayList<User>();
+		followers.add(this);
 		following = new ArrayList<User>();
 		newsFeed = new ArrayList<String>();
 	}
@@ -48,17 +49,26 @@ public class SingleUser extends User {
 		this.newsFeed.add(news);
 	}
 	
+
+	@Override
+	public boolean contains(String id) {
+		return this.getID().equals(id);
+	}
+	
+	public void sendMessage(String message) {
+		this.setMessageCount(this.getMessageCount() + 1);
+		for (User user : this.getFollowers()) {
+			// add most recent post at top of list
+			((SingleUser)user).getNewsFeed().add(0, message);
+		}
+	}
+	
 	/**
 	 * Adds specified {@link User} as follower.
 	 * @param follower
 	 */
 	private void addFollower(User follower) {
 		this.getFollowers().add(follower);
-	}
-
-	@Override
-	public boolean contains(String id) {
-		return this.getID().equals(id);
 	}
 
 }

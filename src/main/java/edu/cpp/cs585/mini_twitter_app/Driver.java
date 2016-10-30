@@ -17,7 +17,7 @@ public class Driver extends JFrame {
 			public void run() {
 				try {
 //					Driver frame = new Driver();
-					MiniTwitterWindow frame = MiniTwitterWindow.getInstance();
+					AdminControlPanel frame = AdminControlPanel.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
