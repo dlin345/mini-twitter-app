@@ -1,7 +1,5 @@
 package edu.cpp.cs585.mini_twitter_app;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
