@@ -74,6 +74,10 @@ public class GroupUser extends User {
 		return count;
 	}
 	
+	/*
+	 * Private methods
+	 */
+	
 	private boolean containsGroupUser() {
 		boolean containsGroup = false;
 		for (User user : this.groupUsers.values()) {

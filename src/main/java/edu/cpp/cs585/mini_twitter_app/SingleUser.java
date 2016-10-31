@@ -49,7 +49,6 @@ public class SingleUser extends User {
 		this.newsFeed.add(news);
 	}
 	
-
 	@Override
 	public boolean contains(String id) {
 		return this.getID().equals(id);
@@ -62,6 +61,10 @@ public class SingleUser extends User {
 			((SingleUser)user).getNewsFeed().add(0, message);
 		}
 	}
+	
+	/*
+	 * Private methods
+	 */
 	
 	/**
 	 * Adds specified {@link User} as follower.
