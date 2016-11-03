@@ -1,9 +1,7 @@
-package edu.cpp.cs585.mini_twitter_gui;
+package edu.cpp.cs585.mini_twitter_app;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import edu.cpp.cs585.mini_twitter_gui.AdminControlPanel;
 
 public class AdminControlPanelTest {
 	

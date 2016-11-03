@@ -1,55 +1,37 @@
-package edu.cpp.cs585.mini_twitter_gui;
+package edu.cpp.cs585.mini_twitter_app;
 
-import edu.cpp.cs585.mini_twitter_app.GroupUser;
-import edu.cpp.cs585.mini_twitter_app.SingleUser;
-import edu.cpp.cs585.mini_twitter_app.User;
+import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.JTextPane;
+import javax.swing.JTree;
+import javax.swing.BoxLayout;
 
-import javax.swing.JButton;
+public class AdminControlPanel extends JFrame {
 
-public class AdminControlPanel extends ControlPanel {
-
-	private static JFrame frame;
+	private JPanel contentPane;
 	private static AdminControlPanel INSTANCE;
+	private User root;
+
+	/**
+	 * Create the frame as Singleton.
+	 */
+	private AdminControlPanel() {
+		setTitle("Mini-Twitter App");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
+		
+		root = new GroupUser("Root");
+	}
 	
-    public static void addComponentsToPane() {
-    	frame = new JFrame("Mini-Twitter App");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridBagLayout());
-        JButton button;
-
-        // Tree Panel test
-        User root = new GroupUser("Root");
-        ((GroupUser)root).addUser(new SingleUser("Single User 1"));
-        ((GroupUser)root).addUser(new SingleUser("Single User 2"));
-        User group1 = new GroupUser("Group User 1");
-        ((GroupUser)group1).addUser(new SingleUser("Single User 3"));
-        ((GroupUser)root).addUser(group1);
-        User group = new GroupUser("Group User 2");
-        ((GroupUser)group).addUser(new SingleUser("Single User 4"));
-        ((GroupUser)group).addUser(new SingleUser("Single User 5"));
-        ((GroupUser)group1).addUser(group);
-        
-        JPanel treePanel = new TreePanel(root);
-        addComponent(frame, treePanel, 0, 0, 1, 6, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        
-        JPanel addUserPanel = new AddUserPanel();
-        addComponent(frame, addUserPanel, 1, 0, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-
-        JPanel openUserPanel = new OpenUserViewPanel();
-        addComponent(frame, openUserPanel, 1, 2, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        
-        JPanel showInfoPanel = new ShowInfoPanel();
-        addComponent(frame, showInfoPanel, 1, 4, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        
-        frame.setSize(800, 400);
-        frame.setVisible(true);
-    }
-    
 	public static AdminControlPanel getInstance() {
 		if (INSTANCE == null) {
 			synchronized (Driver.class) {
@@ -60,4 +42,5 @@ public class AdminControlPanel extends ControlPanel {
 		}
 		return INSTANCE;
 	}
+	
 }

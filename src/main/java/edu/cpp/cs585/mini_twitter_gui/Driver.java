@@ -1,4 +1,4 @@
-package edu.cpp.cs585.mini_twitter_gui;
+package edu.cpp.cs585.mini_twitter_app;
 
 import java.awt.EventQueue;
 
@@ -16,11 +16,9 @@ public class Driver extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+//					Driver frame = new Driver();
 					AdminControlPanel frame = AdminControlPanel.getInstance();
-					frame.addComponentsToPane();
-					
-//					UserViewPanel frame1 = new UserViewPanel();
-//					frame1.addComponentsToPane();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
