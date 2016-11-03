@@ -3,6 +3,8 @@ package edu.cpp.cs585.mini_twitter_app;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 public class GroupUser extends User {
 	
 	// Assume groups cannot follow or be followed
@@ -25,10 +27,13 @@ public class GroupUser extends User {
 	 * Adds {@link User} to {@link GroupUser} if not already present.
 	 * @param user
 	 */
-	public void addUser(User user) {
+	public User addUser(User user) {
 		if (!this.contains(user.getID())) {
 			this.groupUsers.put(user.getID(), user);
+			this.add(new DefaultMutableTreeNode(user.getID()));
+			System.out.println("added child " + user.getID() + " to parent " + this.getID());
 		}
+		return this;
 	}
 	
 	public boolean contains(String id) {
@@ -72,6 +77,19 @@ public class GroupUser extends User {
 			}
 		}
 		return count;
+	}
+	
+	@Override
+	public int getMessageCount() {
+		int msgCount = 0;
+		for (User user : this.groupUsers.values()) {
+			if (user.getClass() == GroupUser.class) {
+				msgCount += ((GroupUser)user).getMessageCount();
+			} else if (user.getClass() == SingleUser.class) {
+				msgCount += user.getMessageCount();
+			}
+		}
+		return msgCount;
 	}
 	
 	/*

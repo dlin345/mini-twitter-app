@@ -124,4 +124,33 @@ public class GroupUserTest {
 		Assert.assertEquals(2, ((GroupUser)groupUser1).getGroupUserCount());
 	}
 	
+	@Test
+	public void getMessageCountTest_singleUsers() {
+		((SingleUser)singleUser1).sendMessage("message 1, user 1");
+		((SingleUser)singleUser1).sendMessage("message 2, user 1");
+		((SingleUser)singleUser2).sendMessage("message 1, user 2");
+		((SingleUser)singleUser3).sendMessage("message 1, user 3");
+		
+		((GroupUser)groupUser1).addUser(singleUser1);
+		((GroupUser)groupUser1).addUser(singleUser2);
+		((GroupUser)groupUser1).addUser(singleUser3);
+		
+		Assert.assertEquals(4, ((GroupUser)groupUser1).getMessageCount());
+	}
+	
+	@Test
+	public void getMessageCountTest_singleUsersInGroup() {
+		((SingleUser)singleUser1).sendMessage("message 1, user 1");
+		((SingleUser)singleUser1).sendMessage("message 2, user 1");
+		((SingleUser)singleUser2).sendMessage("message 1, user 2");
+		((SingleUser)singleUser3).sendMessage("message 1, user 3");
+		
+		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUser(singleUser1);
+		((GroupUser)groupUser2).addUser(singleUser2);
+		((GroupUser)groupUser2).addUser(singleUser3);
+		
+		Assert.assertEquals(4, ((GroupUser)groupUser1).getMessageCount());
+	}
+	
 }

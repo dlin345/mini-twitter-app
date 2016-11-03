@@ -1,6 +1,8 @@
 package edu.cpp.cs585.mini_twitter_app;
 
-public abstract class User {
+import javax.swing.tree.DefaultMutableTreeNode;
+
+public abstract class User extends DefaultMutableTreeNode {
 	
 	private String id;
 	private int messageCount;
@@ -8,6 +10,7 @@ public abstract class User {
 	public abstract boolean contains(String id);
 	
 	public User(String id) {
+		super(id);
 		this.id = id;
 		this.setMessageCount(0);
 	}

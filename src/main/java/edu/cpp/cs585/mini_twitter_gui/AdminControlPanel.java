@@ -1,36 +1,29 @@
-package edu.cpp.cs585.mini_twitter_app;
+package edu.cpp.cs585.mini_twitter_gui;
 
-import java.awt.BorderLayout;
+import edu.cpp.cs585.mini_twitter_app.GroupUser;
+import edu.cpp.cs585.mini_twitter_app.User;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import java.awt.GridBagLayout;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.GridBagConstraints;
-import javax.swing.JTextPane;
-import javax.swing.JTree;
-import javax.swing.BoxLayout;
 
-public class AdminControlPanel extends JFrame {
+public class AdminControlPanel extends ControlPanel {
 
-	private JPanel contentPane;
 	private static AdminControlPanel INSTANCE;
-	private User root;
-
-	/**
-	 * Create the frame as Singleton.
-	 */
-	private AdminControlPanel() {
-		setTitle("Mini-Twitter App");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
-		
-		root = new GroupUser("Root");
-	}
+	
+	private static JFrame frame;
+	private JPanel treePanel;
+	private JPanel addUserPanel;
+	private JPanel openUserViewPanel;
+	private JPanel showInfoPanel;
+	
+	private DefaultMutableTreeNode root;
+	private Map<String, User> allUsers;
 	
 	public static AdminControlPanel getInstance() {
 		if (INSTANCE == null) {
@@ -43,4 +36,40 @@ public class AdminControlPanel extends JFrame {
 		return INSTANCE;
 	}
 	
+	/*
+	 * Private methods
+	 */
+	
+	private AdminControlPanel() {
+		super();
+		
+		initializeComponents();
+		addComponents();
+	}
+	
+    private void addComponents() {
+        addComponent(frame, treePanel, 0, 0, 1, 6, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(frame, addUserPanel, 1, 0, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(frame, openUserViewPanel, 1, 2, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(frame, showInfoPanel, 1, 4, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+    }
+    
+	private void initializeComponents() {
+		frame = new JFrame("Mini-Twitter App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new GridBagLayout());
+        
+        allUsers = new HashMap<String, User>();
+        root = new GroupUser("Root");
+        allUsers.put(((User)root).getID(), (User) this.root);
+        
+        treePanel = new TreePanel(root);
+        addUserPanel = new AddUserPanel(treePanel, allUsers);
+        openUserViewPanel = new OpenUserViewPanel(treePanel);
+        showInfoPanel = new ShowInfoPanel();
+        
+        frame.setSize(800, 400);
+        frame.setVisible(true);
+    }
+    
 }

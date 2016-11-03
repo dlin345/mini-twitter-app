@@ -85,6 +85,7 @@ public class SingleUserTest {
 		((SingleUser)singleUser1).sendMessage(message);
 		
 		Assert.assertEquals(1, ((SingleUser)singleUser2).getNewsFeed().size());
+		Assert.assertEquals(message, ((SingleUser)singleUser2).getNewsFeed().get(0));
 	}
 	
 	@Test
