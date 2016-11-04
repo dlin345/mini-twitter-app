@@ -8,26 +8,26 @@ import java.awt.Insets;
 
 import javax.swing.JPanel;
 
+/**
+ * Parent class for all panels in main UI and user view UI. 
+ * 
+ * @author delin
+ *
+ */
+
 public abstract class ControlPanel extends JPanel {
 	
 	private static final Insets insets = new Insets(0, 0, 0, 0);
-    
-    public ControlPanel() {
-    	super(new GridBagLayout());
-    }
-
-	public static void addComponentWithPadding(Container container, Component component, int gridx, int gridy,
-    		int gridwidth, int gridheight, int anchor, int fill, int ipadx, int ipady) {
-	    GridBagConstraints gbc = new GridBagConstraints(gridx, gridy, gridwidth, gridheight, 1.0, 1.0,
-	        anchor, fill, insets, ipadx, ipady);
-	    container.add(component, gbc);
-	}
 	
+	public ControlPanel() {
+		super(new GridBagLayout());
+	}
+
 	public static void addComponent(Container container, Component component, int gridx, int gridy,
-    		int gridwidth, int gridheight, int anchor, int fill) {
-	    GridBagConstraints gbc = new GridBagConstraints(gridx, gridy, gridwidth, gridheight, 1.0, 1.0,
-	        anchor, fill, insets, 0, 0);
-	    container.add(component, gbc);
+			int gridwidth, int gridheight, int anchor, int fill) {
+		GridBagConstraints gbc = new GridBagConstraints(gridx, gridy, gridwidth, gridheight, 1.0, 1.0,
+		    anchor, fill, insets, 0, 0);
+		container.add(component, gbc);
 	}
 
 }

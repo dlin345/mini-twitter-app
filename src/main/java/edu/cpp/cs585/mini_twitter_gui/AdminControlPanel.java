@@ -1,6 +1,7 @@
 package edu.cpp.cs585.mini_twitter_gui;
 
 import edu.cpp.cs585.mini_twitter_app.GroupUser;
+import edu.cpp.cs585.mini_twitter_app.Observer;
 import edu.cpp.cs585.mini_twitter_app.User;
 
 import javax.swing.JFrame;
@@ -11,6 +12,14 @@ import java.awt.GridBagLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.GridBagConstraints;
+
+/**
+ * Panel for main UI.
+ * Contains TreePanel, AddUserPanel, OpenUserViewPanel, ShowInfoPanel.
+ * 
+ * @author delin
+ *
+ */
 
 public class AdminControlPanel extends ControlPanel {
 
@@ -23,7 +32,7 @@ public class AdminControlPanel extends ControlPanel {
 	private JPanel showInfoPanel;
 	
 	private DefaultMutableTreeNode root;
-	private Map<String, User> allUsers;
+	private Map<String, Observer> allUsers;
 	
 	public static AdminControlPanel getInstance() {
 		if (INSTANCE == null) {
@@ -47,29 +56,29 @@ public class AdminControlPanel extends ControlPanel {
 		addComponents();
 	}
 	
-    private void addComponents() {
-        addComponent(frame, treePanel, 0, 0, 1, 6, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(frame, addUserPanel, 1, 0, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(frame, openUserViewPanel, 1, 2, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(frame, showInfoPanel, 1, 4, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-    }
+	private void addComponents() {
+		addComponent(frame, treePanel, 0, 0, 1, 6, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(frame, addUserPanel, 1, 0, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(frame, openUserViewPanel, 1, 2, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(frame, showInfoPanel, 1, 4, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+	}
     
 	private void initializeComponents() {
 		frame = new JFrame("Mini-Twitter App");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridBagLayout());
-        
-        allUsers = new HashMap<String, User>();
-        root = new GroupUser("Root");
-        allUsers.put(((User)root).getID(), (User) this.root);
-        
-        treePanel = new TreePanel(root);
-        addUserPanel = new AddUserPanel(treePanel, allUsers);
-        openUserViewPanel = new OpenUserViewPanel(treePanel);
-        showInfoPanel = new ShowInfoPanel();
-        
-        frame.setSize(800, 400);
-        frame.setVisible(true);
-    }
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new GridBagLayout());
+		
+		allUsers = new HashMap<String, Observer>();
+		root = new GroupUser("Root");
+		allUsers.put(((User)root).getID(), (Observer) this.root);
+		
+		treePanel = new TreePanel(root);
+		addUserPanel = new AddUserPanel(treePanel, allUsers);
+		openUserViewPanel = new OpenUserViewPanel(treePanel, allUsers);
+		showInfoPanel = new ShowInfoPanel();
+		
+		frame.setSize(800, 400);
+		frame.setVisible(true);
+	}
     
 }

@@ -3,7 +3,6 @@ package edu.cpp.cs585.mini_twitter_gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Driver extends JFrame {
 

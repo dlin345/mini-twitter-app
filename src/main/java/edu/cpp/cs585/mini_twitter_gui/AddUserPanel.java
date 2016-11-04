@@ -11,13 +11,28 @@ import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import edu.cpp.cs585.mini_twitter_app.GroupUser;
+import edu.cpp.cs585.mini_twitter_app.Observer;
 import edu.cpp.cs585.mini_twitter_app.SingleUser;
 import edu.cpp.cs585.mini_twitter_app.User;
+
+/**
+ * Panel containing text fields and buttons to add 
+ * SingleUser or GroupUser.
+ * 
+ * 	- assume all SingleUser and GroupUser IDs must be unique
+ * 	- if GroupUser is selected in TreePanel, SingleUser or 
+ * 		GroupUser will be added as a child of the selected GroupUser
+ *  - if SingleUser is selected in TreePanel, SingleUser or 
+ *  	GroupUser will be added as a child of its parent GroupUser
+ * 
+ * @author delin
+ *
+ */
 
 public class AddUserPanel extends ControlPanel {
 
 	private JPanel treePanel;
-	private Map<String, User> allUsers;
+	private Map<String, Observer> allUsers;
 	
 	private JButton addUserButton;
 	private JButton addGroupButton;
@@ -27,7 +42,7 @@ public class AddUserPanel extends ControlPanel {
 	/**
 	 * Create the panel.
 	 */
-	public AddUserPanel(JPanel treePanel, Map<String, User> allUsers) {
+	public AddUserPanel(JPanel treePanel, Map<String, Observer> allUsers) {
 		super();
 		this.treePanel = treePanel;
 		this.allUsers = allUsers;
@@ -40,38 +55,41 @@ public class AddUserPanel extends ControlPanel {
 	 * Private methods 
 	 */
 	
-    private void addComponents() {
-	    addComponent(this, userId, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-	    addComponent(this, addUserButton, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-	    addComponent(this, groupId, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-	    addComponent(this, addGroupButton, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-    }
+	private void addComponents() {
+		addComponent(this, userId, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(this, addUserButton, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(this, groupId, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+		addComponent(this, addGroupButton, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+	}
+	
+	private void initializeComponents() {
+		userId = new JTextField("User ID");
+		groupId = new JTextField("Group ID");
+		
+		addUserButton = new JButton("Add User");
+		initializeAddUserButtonActionListener();
+		
+		addGroupButton = new JButton("Add Group");
+		initializeAddGroupButtonActionListener();
+	}
+	
+	/*
+	 * Action Listeners
+	 */
     
-    private void initializeComponents() {
-    	userId = new JTextField("User ID");
-    	groupId = new JTextField("Group ID");
-    	
-    	addUserButton = new JButton("Add User");
-    	initializeAddUserButtonActionListener();
-    	
-    	addGroupButton = new JButton("Add Group");
-    	initializeAddGroupButtonActionListener();
-    }
-    
-    private void initializeAddUserButtonActionListener() {
+	private void initializeAddUserButtonActionListener() {
 		// TODO: add press enter functionality
-    	addUserButton.addActionListener(new ActionListener() {
-    		
+		addUserButton.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// check if user ID already exists
 				if (!allUsers.containsKey(userId.getText())) {
-					User child = new SingleUser(userId.getText());
+					Observer child = new SingleUser(userId.getText());
 					
-					allUsers.put(child.getID(), child);
-					((TreePanel)treePanel).addSingleUser(child);
+					allUsers.put(((SingleUser) child).getID(), child);
+					((TreePanel)treePanel).addSingleUser((DefaultMutableTreeNode) child);
 				}	
-				
 			}
 		});
 	}
@@ -85,7 +103,7 @@ public class AddUserPanel extends ControlPanel {
 				if (!allUsers.containsKey(groupId.getText())) {
 					DefaultMutableTreeNode child = new GroupUser(groupId.getText());
 					
-					allUsers.put(((User) child).getID(), (User) child);
+					allUsers.put(((User) child).getID(), (Observer) child);
 					((TreePanel)treePanel).addGroupUser(child);
 				}
 			}

@@ -5,91 +5,114 @@ import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class GroupUser extends User {
+/**
+ * GroupUser is the Composite of Composite design pattern.
+ * GroupUser is an Observer of Observer design pattern.
+ * 
+ * 	- assume cannot follow GroupUser
+ * 
+ * @author delin
+ *
+ */
+
+public class GroupUser extends User implements Observer {
 	
-	// Assume groups cannot follow or be followed
 	private Map<String,User> groupUsers;
 	
+	/**
+	 * GroupUser icon is only distinguished from SingleUser after a User
+	 * is added to the GroupUser.
+	 */
 	public GroupUser(String id) {
 		super(id);
 		groupUsers = new HashMap<String,User>();
 	}
-
+	
 	public Map<String,User> getGroupUsers() {
 		return groupUsers;
 	}
 	
-	public User getUser(int index) {
-		return groupUsers.get(index);
-	}
-
 	/**
 	 * Adds {@link User} to {@link GroupUser} if not already present.
-	 * @param user
 	 */
 	public User addUser(User user) {
 		if (!this.contains(user.getID())) {
 			this.groupUsers.put(user.getID(), user);
 			this.add(new DefaultMutableTreeNode(user.getID()));
-			System.out.println("added child " + user.getID() + " to parent " + this.getID());
 		}
 		return this;
 	}
 	
+	/*
+	 * Composite methods
+	 */
+	
+	/**
+	 * Checks if this {@link GroupUser} contains specified User ID.
+	 */
+	@Override
 	public boolean contains(String id) {
 		boolean contains = false;
 		for (User user : groupUsers.values()) {
-			if (user.getID().equals(id)) {
+			if (user.contains(id)) {
 				contains = true;
-			} else if (user.getClass() == GroupUser.class) {
-				if (user.contains(id)) {
-					contains = true;
-				}
 			}
 		}
 		return contains;
 	}
 	
+	/**
+	 * Returns number of {@link SingleUser}s in the {@link GroupUser}.
+	 * @return
+	 */
+	@Override
 	public int getSingleUserCount() {
 		int count = 0;
 		for (User user : this.groupUsers.values()) {
-			if (user.getClass() == SingleUser.class) {
+			count += user.getSingleUserCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns number of {@link GroupUser}s that are descendants of 
+	 * this {@link GroupUser}.  Group count does not include {@code this} 
+	 * {@link GroupUser}.
+	 * @return
+	 */
+	@Override
+	public int getGroupUserCount() {
+		int count = 0;
+		for (User user : this.groupUsers.values()) {
+			if (user.getClass() == GroupUser.class) {
 				++count;
-			} else {
-				count += ((GroupUser)user).getSingleUserCount();
+				count += user.getGroupUserCount();
 			}
 		}
 		return count;
 	}
 	
 	/**
-	 * Group count does not include {@code this} {@link GroupUser}.
-	 * @return
+	 * Returns total number of messages sent by members of this {@link GroupUser}.
 	 */
-	public int getGroupUserCount() {
-		int count = 0;
-		for (User user : this.groupUsers.values()) {
-			if (user.getClass() == GroupUser.class) {
-				++count;
-				if (((GroupUser)user).containsGroupUser()) {
-					count += ((GroupUser)user).getGroupUserCount();
-				}
-			}
-		}
-		return count;
-	}
-	
 	@Override
 	public int getMessageCount() {
 		int msgCount = 0;
 		for (User user : this.groupUsers.values()) {
-			if (user.getClass() == GroupUser.class) {
-				msgCount += ((GroupUser)user).getMessageCount();
-			} else if (user.getClass() == SingleUser.class) {
-				msgCount += user.getMessageCount();
-			}
+			msgCount += user.getMessageCount();
 		}
 		return msgCount;
+	}
+
+	/*
+	 * Observer methods
+	 */
+	
+	@Override
+	public void update(Subject subject) {
+		for (User user : groupUsers.values()) {
+			((Observer) user).update(subject);
+		}
 	}
 	
 	/*
@@ -105,5 +128,5 @@ public class GroupUser extends User {
 		}
 		return containsGroup;
 	}
-
+	
 }
