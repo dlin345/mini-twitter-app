@@ -27,7 +27,7 @@ public class GroupUserTest {
 	
 	@Test
 	public void addUserTest_addSingleUser() {
-		((GroupUser)groupUser1).addUser(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
 		
 		Map<String,User> group = ((GroupUser)groupUser1).getGroupUsers();
 		
@@ -36,7 +36,7 @@ public class GroupUserTest {
 	
 	@Test
 	public void addUserTest_addGroupUser() {
-		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
 		
 		Map<String,User> group = ((GroupUser)groupUser1).getGroupUsers();
 		
@@ -45,7 +45,7 @@ public class GroupUserTest {
 	
 	@Test
 	public void getUserTest_addSingleUser() {
-		((GroupUser)groupUser1).addUser(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
 		
 		Map<String,User> group = ((GroupUser)groupUser1).getGroupUsers();
 		
@@ -54,7 +54,7 @@ public class GroupUserTest {
 	
 	@Test
 	public void getUserTest_addGroupUser() {
-		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
 		
 		Map<String,User> group = ((GroupUser)groupUser1).getGroupUsers();
 		
@@ -63,63 +63,63 @@ public class GroupUserTest {
 
 	@Test
 	public void containsTest_SingleUsers_shouldPass() {
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser1).addUser(singleUser2);
-		((GroupUser)groupUser1).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser2);
+		((GroupUser)groupUser1).addUserInGroup(singleUser3);
 		
-		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
 		
 		Assert.assertEquals(true, groupUser1.contains(singleUser3.getID()));
 	}
 	
 	@Test
 	public void containsTest_SingleUsersInGroup_shouldPass() {
-		((GroupUser)groupUser2).addUser(singleUser1);
-		((GroupUser)groupUser2).addUser(singleUser2);
-		((GroupUser)groupUser2).addUser(singleUser3);
+		((GroupUser)groupUser2).addUserInGroup(singleUser1);
+		((GroupUser)groupUser2).addUserInGroup(singleUser2);
+		((GroupUser)groupUser2).addUserInGroup(singleUser3);
 		
-		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
 		
 		Assert.assertEquals(true, groupUser1.contains(singleUser3.getID()));
 	}
 	
 	@Test
 	public void getSingleUserCountTest_singleUsers() {
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser1).addUser(singleUser2);
-		((GroupUser)groupUser1).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser2);
+		((GroupUser)groupUser1).addUserInGroup(singleUser3);
 		
 		Assert.assertEquals(3, ((GroupUser)groupUser1).getSingleUserCount());
 	}
 	
 	@Test
 	public void getSingleUserCountTest_singleUsersInGroup() {
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser1).addUser(singleUser2);
-		((GroupUser)groupUser2).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser2);
+		((GroupUser)groupUser2).addUserInGroup(singleUser3);
 		
-		((GroupUser)groupUser2).addUser(groupUser1);
+		((GroupUser)groupUser2).addUserInGroup(groupUser1);
 		
 		Assert.assertEquals(3, ((GroupUser)groupUser2).getSingleUserCount());
 	}
 	
 	@Test
 	public void getGroupUserCountTest_singleUsers() {
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser1).addUser(singleUser2);
-		((GroupUser)groupUser1).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser2);
+		((GroupUser)groupUser1).addUserInGroup(singleUser3);
 		
 		Assert.assertEquals(0, ((GroupUser)groupUser1).getGroupUserCount());
 	}
 	
 	@Test
 	public void getGroupUserCountTest_singleUsersInGroup() {
-		((GroupUser)groupUser3).addUser(singleUser1);
-		((GroupUser)groupUser3).addUser(singleUser2);
-		((GroupUser)groupUser3).addUser(singleUser3);
-		((GroupUser)groupUser2).addUser(groupUser3);
+		((GroupUser)groupUser3).addUserInGroup(singleUser1);
+		((GroupUser)groupUser3).addUserInGroup(singleUser2);
+		((GroupUser)groupUser3).addUserInGroup(singleUser3);
+		((GroupUser)groupUser2).addUserInGroup(groupUser3);
 		
-		((GroupUser)groupUser1).addUser(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
 		
 		Assert.assertEquals(2, ((GroupUser)groupUser1).getGroupUserCount());
 	}
@@ -131,9 +131,9 @@ public class GroupUserTest {
 		((SingleUser)singleUser2).sendMessage("message 1, user 2");
 		((SingleUser)singleUser3).sendMessage("message 1, user 3");
 		
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser1).addUser(singleUser2);
-		((GroupUser)groupUser1).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser1).addUserInGroup(singleUser2);
+		((GroupUser)groupUser1).addUserInGroup(singleUser3);
 		
 		Assert.assertEquals(4, ((GroupUser)groupUser1).getMessageCount());
 	}
@@ -145,10 +145,10 @@ public class GroupUserTest {
 		((SingleUser)singleUser2).sendMessage("message 1, user 2");
 		((SingleUser)singleUser3).sendMessage("message 1, user 3");
 		
-		((GroupUser)groupUser1).addUser(groupUser2);
-		((GroupUser)groupUser1).addUser(singleUser1);
-		((GroupUser)groupUser2).addUser(singleUser2);
-		((GroupUser)groupUser2).addUser(singleUser3);
+		((GroupUser)groupUser1).addUserInGroup(groupUser2);
+		((GroupUser)groupUser1).addUserInGroup(singleUser1);
+		((GroupUser)groupUser2).addUserInGroup(singleUser2);
+		((GroupUser)groupUser2).addUserInGroup(singleUser3);
 		
 		Assert.assertEquals(4, ((GroupUser)groupUser1).getMessageCount());
 	}

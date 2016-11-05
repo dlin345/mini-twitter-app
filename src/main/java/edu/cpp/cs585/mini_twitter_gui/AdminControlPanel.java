@@ -65,8 +65,7 @@ public class AdminControlPanel extends ControlPanel {
     
 	private void initializeComponents() {
 		frame = new JFrame("Mini-Twitter App");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new GridBagLayout());
+		formatFrame();
 		
 		allUsers = new HashMap<String, Observer>();
 		root = new GroupUser("Root");
@@ -75,8 +74,12 @@ public class AdminControlPanel extends ControlPanel {
 		treePanel = new TreePanel(root);
 		addUserPanel = new AddUserPanel(treePanel, allUsers);
 		openUserViewPanel = new OpenUserViewPanel(treePanel, allUsers);
-		showInfoPanel = new ShowInfoPanel();
-		
+		showInfoPanel = new ShowInfoPanel(treePanel);
+	}
+
+	private void formatFrame() {
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new GridBagLayout());
 		frame.setSize(800, 400);
 		frame.setVisible(true);
 	}

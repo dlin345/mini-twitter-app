@@ -1,25 +1,32 @@
 package edu.cpp.cs585.mini_twitter_app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.cpp.cs585.mini_twitter_visitor.Visitor;
+
 /**
  * SingleUser represents the Leaf of the Composite design pattern.
- * SingleUser is both Subject and Observer of Observer design pattern.
+ * SingleUser represents both Subject and Observer of Observer design pattern.
+ * SingleUser accepts visitors of Visitor design pattern.
  * 
  * @author delin
  *
  */
 
-public class SingleUser extends User implements Subject, Observer {
+public class SingleUser extends User implements Subject {
+	
+	private static final List<String> POSITIVE_WORDS = Arrays.asList("good", "great", "excellent", "awesome");
 	
 	private Map<String, Observer> followers;
 	private Map<String, Subject> following;
 	private List<String> newsFeed;
 	
 	private String latestMessage;
+	private int positiveMessageCount;
 	
 	public SingleUser (String id) {
 		super(id);
@@ -41,18 +48,23 @@ public class SingleUser extends User implements Subject, Observer {
 		return newsFeed;
 	}
 
-	public void addToNewsFeed(String news) {
-		this.newsFeed.add(news);
-	}
-	
 	public void sendMessage(String message) {
 		this.latestMessage = message;
 		this.setMessageCount(this.getMessageCount() + 1);
+		
+		if (isPositiveMessage(message)) {
+			++positiveMessageCount;
+		}
+		
 		notifyObservers();
 	}
 	
 	public String getLatestMessage() {
 		return this.latestMessage;
+	}
+	
+	public int getPositiveMessageCount() {
+		return positiveMessageCount;
 	}
 	
 	/*
@@ -80,7 +92,7 @@ public class SingleUser extends User implements Subject, Observer {
 	
 	@Override
 	public void update(Subject subject) {
-		getNewsFeed().add(0, (((SingleUser) subject).getID() + ": " + ((SingleUser) subject).getLatestMessage()));
+		newsFeed.add(0, (((SingleUser) subject).getID() + ": " + ((SingleUser) subject).getLatestMessage()));
 	}
 	
 	/*
@@ -97,6 +109,15 @@ public class SingleUser extends User implements Subject, Observer {
 		for (Observer obs : followers.values()) {
 			obs.update(this);
 		}
+	}
+	
+	/*
+	 * Visitor methods
+	 */
+	
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visitSingleUser(this);
 	}
 	
 	/*
@@ -120,6 +141,17 @@ public class SingleUser extends User implements Subject, Observer {
 		if (toFollow.getClass() == SingleUser.class) {
 			getFollowing().put(((User) toFollow).getID(), toFollow);
 		}
+	}
+	
+	private boolean isPositiveMessage(String message) {
+		boolean positive = false;
+		message = message.toLowerCase();
+		for (String word : POSITIVE_WORDS) {
+			if (message.contains(word)) {
+				positive = true;
+			}
+		}
+		return positive;
 	}
 
 }

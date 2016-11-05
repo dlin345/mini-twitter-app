@@ -22,8 +22,8 @@ import edu.cpp.cs585.mini_twitter_app.User;
  * 	- assume all SingleUser and GroupUser IDs must be unique
  * 	- if GroupUser is selected in TreePanel, SingleUser or 
  * 		GroupUser will be added as a child of the selected GroupUser
- *  - if SingleUser is selected in TreePanel, SingleUser or 
- *  	GroupUser will be added as a child of its parent GroupUser
+ *	- if SingleUser is selected in TreePanel, SingleUser or 
+ *		GroupUser will be added as a child of its parent GroupUser
  * 
  * @author delin
  *
@@ -87,7 +87,7 @@ public class AddUserPanel extends ControlPanel {
 				if (!allUsers.containsKey(userId.getText())) {
 					Observer child = new SingleUser(userId.getText());
 					
-					allUsers.put(((SingleUser) child).getID(), child);
+					allUsers.put(((User) child).getID(), child);
 					((TreePanel)treePanel).addSingleUser((DefaultMutableTreeNode) child);
 				}	
 			}
@@ -101,10 +101,10 @@ public class AddUserPanel extends ControlPanel {
 			public void actionPerformed(ActionEvent e) {
 				// check if user ID already exists
 				if (!allUsers.containsKey(groupId.getText())) {
-					DefaultMutableTreeNode child = new GroupUser(groupId.getText());
+					Observer child = new GroupUser(groupId.getText());
 					
-					allUsers.put(((User) child).getID(), (Observer) child);
-					((TreePanel)treePanel).addGroupUser(child);
+					allUsers.put(((User) child).getID(), child);
+					((TreePanel)treePanel).addGroupUser((DefaultMutableTreeNode) child);
 				}
 			}
 		});

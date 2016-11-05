@@ -114,6 +114,11 @@ public class TreePanel extends JPanel {
 		if (shouldBeVisible) {
 			tree.scrollPathToVisible(new TreePath(childNode.getPath()));
 		}
+		
+		if (parent.getClass() != GroupUser.class) {
+			parent = (DefaultMutableTreeNode) parent.getUserObject();
+		}
+		((GroupUser) parent).addUserInGroup((User) child);
 	}
     
 	private void addComponents() {
@@ -125,12 +130,16 @@ public class TreePanel extends JPanel {
 		treeModel.addTreeModelListener(new MyTreeModelListener());
 		
 		tree = new JTree(treeModel);
+		formatTree();
+		
+		scrollPane = new JScrollPane(tree);
+	}
+
+	private void formatTree() {
 		tree.setEditable(true);
 		tree.getSelectionModel().setSelectionMode (TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 		tree.setSelectionRow(0);
-		
-		scrollPane = new JScrollPane(tree);
 	}
 
 	/**

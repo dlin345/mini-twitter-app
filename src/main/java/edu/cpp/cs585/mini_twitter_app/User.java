@@ -2,6 +2,8 @@ package edu.cpp.cs585.mini_twitter_app;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import edu.cpp.cs585.mini_twitter_visitor.Visitor;
+
 /**
  * User represents the Component of Composite design pattern.
  * 
@@ -9,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  */
 
-public abstract class User extends DefaultMutableTreeNode {
+public abstract class User extends DefaultMutableTreeNode implements Observer {
 	
 	private String id;
 	private int messageCount;
@@ -35,5 +37,11 @@ public abstract class User extends DefaultMutableTreeNode {
 	public void setMessageCount(int messageCount) {
 		this.messageCount = messageCount;
 	}
+	
+	/*
+	 * Visitor methods
+	 */
+	
+	public abstract void accept(Visitor visitor);
 	
 }

@@ -3,11 +3,12 @@ package edu.cpp.cs585.mini_twitter_app;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import edu.cpp.cs585.mini_twitter_visitor.Visitor;
 
 /**
  * GroupUser is the Composite of Composite design pattern.
  * GroupUser is an Observer of Observer design pattern.
+ * GroupUser accepts visitors of Visitor design pattern.
  * 
  * 	- assume cannot follow GroupUser
  * 
@@ -15,7 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  */
 
-public class GroupUser extends User implements Observer {
+public class GroupUser extends User {
 	
 	private Map<String,User> groupUsers;
 	
@@ -33,12 +34,12 @@ public class GroupUser extends User implements Observer {
 	}
 	
 	/**
-	 * Adds {@link User} to {@link GroupUser} if not already present.
+	 * Adds {@link User} to list of {@link User}s in this {@link GroupUser} 
+	 * if not already present.
 	 */
-	public User addUser(User user) {
+	public User addUserInGroup(User user) {
 		if (!this.contains(user.getID())) {
 			this.groupUsers.put(user.getID(), user);
-			this.add(new DefaultMutableTreeNode(user.getID()));
 		}
 		return this;
 	}
@@ -113,6 +114,18 @@ public class GroupUser extends User implements Observer {
 		for (User user : groupUsers.values()) {
 			((Observer) user).update(subject);
 		}
+	}
+	
+	/*
+	 * Visitor methods
+	 */
+
+	@Override
+	public void accept(Visitor visitor) {
+		for (User user : groupUsers.values()) {
+			user.accept(visitor);
+		}
+		visitor.visitGroupUser(this);
 	}
 	
 	/*

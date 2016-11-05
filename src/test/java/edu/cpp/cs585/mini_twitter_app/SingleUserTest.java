@@ -71,17 +71,6 @@ public class SingleUserTest {
 	}
 	
 	@Test
-	public void addToNewsFeedTest() {
-		String message = "Test add to newsfeed";
-		((SingleUser)singleUser1).addToNewsFeed(message);
-		
-		List<String> newsfeed = ((SingleUser)singleUser1).getNewsFeed();
-		
-		Assert.assertEquals(1, newsfeed.size());
-		Assert.assertEquals(message, newsfeed.get(0));
-	}
-	
-	@Test
 	public void sendMessageTest_singleUsers() {
 		((SingleUser) singleUser1).attach(singleUser2);
 		((SingleUser) singleUser1).attach(singleUser3);

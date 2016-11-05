@@ -129,6 +129,7 @@ public class UserViewPanel extends ControlPanel {
 		for (String news : ((SingleUser) user).getNewsFeed()) {
 			list += " - " + news + "\n";
 		}
+		
 		// show most recent message at top of news feed
 		newsFeedTextArea.setText(list);
 		newsFeedTextArea.setCaretPosition(0);

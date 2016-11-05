@@ -68,6 +68,16 @@ public class OpenUserViewPanel extends ControlPanel {
 		spacerPanel = new JPanel();
 	}
 	
+	private DefaultMutableTreeNode getSelectedNode() {
+		JTree tree = ((TreePanel)treePanel).getTree();
+		DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
+		if (!((TreePanel)treePanel).getRoot().equals(selectedNode)) {
+			selectedNode = (DefaultMutableTreeNode) selectedNode.getUserObject();
+		}
+		
+		return selectedNode;
+	}
+	
 	/*
 	 * Action Listeners
 	 */
@@ -78,11 +88,7 @@ public class OpenUserViewPanel extends ControlPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// get User selected in TreePanel
-				JTree tree = ((TreePanel)treePanel).getTree();
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
-				if (!((TreePanel)treePanel).getRoot().equals(selectedNode)) {
-					selectedNode = (DefaultMutableTreeNode) selectedNode.getUserObject();
-				}
+				DefaultMutableTreeNode selectedNode = getSelectedNode();
 				
 				// open user view UI on click, only open one window per User
 				if (!openPanels.containsKey(((User) selectedNode).getID()) && selectedNode.getClass() == SingleUser.class) {
